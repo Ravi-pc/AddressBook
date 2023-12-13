@@ -89,6 +89,22 @@ class AddressBook:
         else:
             print(f'No Element found of this name')
 
+    def delete_contact(self, first_name):
+        """
+            Description: delete_contact function is used to delete the details of a person
+                         from the address book.
+
+            Parameter: First Name
+
+            Return:    None
+
+        """
+        contact_obj: Contact = self.contact_dict.get(first_name)
+        if contact_obj:
+            self.contact_dict.pop(first_name)
+        else:
+            print(f'Name not found or dictionary is empty.')
+
 
 def contact_details():
     """
@@ -105,6 +121,7 @@ def contact_details():
     while True:
         print(f'1. Add New Contact\n'
               f'2. Update an Existing Contact\n'
+              f'3. Delete an Existing Contact\n'
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -123,6 +140,9 @@ def contact_details():
             case 2:
                 name = input('Enter the first name of the contact: ')
                 address_book_obj.update_contact(name)
+            case 3:
+                first_name = input('Enter the name of the contact you want to delete: ')
+                address_book_obj.delete_contact(first_name)
 
 
 if __name__ == "__main__":
