@@ -5,7 +5,7 @@
 
 @Last Modified by:
 
-@Last Modified time: 2023-12-12 15:20:30
+@Last Modified time: 2023-13-12 11:20:30
 
 @Title : Multiple Address Book
 """
@@ -39,6 +39,56 @@ class AddressBook:
         """
         self.contact_dict.update({contact_obj.f_name: contact_obj})
 
+    def update_contact(self, f_name):
+        """
+            Description: update_contact function is used to update the details of a person
+                         from the address book.
+
+            Parameter: First Name
+
+            Return:    None
+
+        """
+        contact_obj: Contact = self.contact_dict.get(f_name)
+        if contact_obj:
+            while True:
+                print(f'1. Update First Name.\n'
+                      f'2. Update Last Name.\n'
+                      f'3. Update Address\n'
+                      f'4. Update City\n'
+                      f'5. Update Zip Code\n'
+                      f'6. Update Phone Number\n'
+                      f'7. Update E-Mail\n'
+                      f'0. Exit'
+                      )
+                option = int(input('Enter the option:  '))
+                match option:
+                    case 1:
+                        change = input(f'Enter new first name: ')
+                        self.contact_dict.update({f_name: change})
+                    case 2:
+                        change = input(f'Enter new last name: ')
+                        self.contact_dict.update({f_name: change})
+                    case 3:
+                        change = input(f'Enter new Address: ')
+                        self.contact_dict.update({f_name: change})
+                    case 4:
+                        change = input(f'Enter new City: ')
+                        self.contact_dict.update({f_name: change})
+                    case 5:
+                        change = input(f'Enter new Zip Code: ')
+                        self.contact_dict.update({f_name: change})
+                    case 6:
+                        change = input(f'Enter new Phone Number: ')
+                        self.contact_dict.update({f_name: change})
+                    case 7:
+                        change = input(f'Enter new E-Mail: ')
+                        self.contact_dict.update({f_name: change})
+                    case 0:
+                        break
+        else:
+            print(f'No Element found of this name')
+
 
 def contact_details():
     """
@@ -54,6 +104,7 @@ def contact_details():
     address_book_obj = AddressBook(book_name)
     while True:
         print(f'1. Add New Contact\n'
+              f'2. Update an Existing Contact\n'
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -69,6 +120,9 @@ def contact_details():
                 email = input('Enter the E-Mail of the Person ')
                 contact_obj = Contact(f_name, l_name, address, city, zip_code, ph_no, email, )
                 address_book_obj.add_contact(contact_obj)
+            case 2:
+                name = input('Enter the first name of the contact: ')
+                address_book_obj.update_contact(name)
 
 
 if __name__ == "__main__":
