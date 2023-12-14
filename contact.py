@@ -87,7 +87,10 @@ class AddressBook:
             Return:    None
 
         """
-        self.contact_dict.update({contact_obj.f_name: contact_obj})
+        if contact_obj.f_name not in self.contact_dict:
+            self.contact_dict.update({contact_obj.f_name: contact_obj})
+        else:
+            print(f'Name Already Present\n')
 
     def modify_contact(self, name):
         contact_obj: Contact = self.contact_dict.get(name)
@@ -132,11 +135,6 @@ class AddressBook:
                      Phone Number: {value.ph_no}
                      E-Mail : {value.e_mail}  
              """)
-
-    def display_city_contact(self, city_name):
-        contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
-        for _ in contact.values():
-            self.display_contact()
 
 
 class MultipleAddressBook:
