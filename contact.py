@@ -136,6 +136,11 @@ class AddressBook:
                      E-Mail : {value.e_mail}  
              """)
 
+    def display_city_contact(self, city_name):
+        contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
+        for _ in contact.values():
+            self.display_contact()
+
 
 class MultipleAddressBook:
     def __init__(self):
