@@ -12,12 +12,13 @@
 
 
 class Contact:
-    def __init__(self, f_name, l_name, address, city, zip_code, ph_no, e_mail):
+    def __init__(self, f_name, l_name, address, city, zip_code, state, ph_no, e_mail):
         self.f_name = f_name
         self.l_name = l_name
         self.address = address
         self.city = city
         self.zip_code = zip_code
+        self.state = state
         self.ph_no = ph_no
         self.e_mail = e_mail
 
@@ -58,6 +59,9 @@ class Contact:
                 case 5:
                     change = input(f'Enter new Zip Code: ')
                     self.zip_code = change
+                case 6:
+                    change = input(f'Enter the new State')
+                    self.state = change
                 case 6:
                     change = input(f'Enter new Phone Number: ')
                     self.ph_no = change
@@ -129,6 +133,11 @@ class AddressBook:
                      E-Mail : {value.e_mail}  
              """)
 
+    def display_city_contact(self, city_name):
+        contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
+        for _ in contact.values():
+            self.display_contact()
+
 
 class MultipleAddressBook:
     def __init__(self):
@@ -158,6 +167,7 @@ def contact_details():
               f'3. Update an Existing Contact\n'
               f'4. Delete an Existing Contact\n'
               f'5. Display the Contacts\n'
+              f'6. Get All the contacts of a city\n'
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -173,26 +183,32 @@ def contact_details():
                 address = input('Enter the Address of the Person ')
                 city = input('Enter the City of the Person ')
                 zip_code = input('Enter the Zip code of the area ')
+                state = input('Enter the State: ')
                 ph_no = input('Enter the Phone Number of the Person ')
                 email = input('Enter the E-Mail of the Person ')
-                contact_obj = Contact(f_name, l_name, address, city, zip_code, ph_no, email)
+                contact_obj = Contact(f_name, l_name, address, city, zip_code, state, ph_no, email)
                 address_book_obj.add_contact(contact_obj)
                 multi_address_book_obj.add_address_book(address_book_obj)
 
-            case 2:
+            case 3:
                 book_name = input('Enter the name of the Address Book: ')
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 name = input('Enter the first name of the contact: ')
                 address_book_obj.modify_contact(name)
-            case 3:
+            case 4:
                 book_name = input('Enter the name of the Address Book: ')
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 first_name = input('Enter the name of the contact you want to delete: ')
                 address_book_obj.delete_contact(first_name)
-            case 4:
+            case 5:
                 book_name = input('Enter the name of the Address Book: ')
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 address_book_obj.display_contact()
+            case 6:
+                book_name = input('Enter the name of the Address Book: ')
+                address_book_obj = multi_address_book_obj.get_address_book(book_name)
+                city_name = input('Enter the City or State Name: ')
+                address_book_obj.display_city_contact(city_name)
 
 
 if __name__ == "__main__":
