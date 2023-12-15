@@ -144,7 +144,11 @@ class AddressBook:
 
     def count_city_contact(self, city_name):
         contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
-        print(f'There are {len(contact)} in the {city_name}')
+        print(f'There are {len(contact)}  contact in the {city_name}')
+
+    def sort_contact(self):
+        for key, value in dict(sorted(self.contact_dict.items())).items():
+            value.display_contact()
 
 
 class MultipleAddressBook:
@@ -176,7 +180,9 @@ def contact_details():
               f'4. Delete an Existing Contact\n'
               f'5. Display the Contacts\n'
               f'6. Get All the contacts of a city\n'
-              f'7. Get number of contacts in state or city'
+              f'7. Get number of contacts in state or city\n'
+              f''
+            
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -223,6 +229,10 @@ def contact_details():
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 city_name = input('Enter the City or State Name: ')
                 address_book_obj.count_city_contact(city_name)
+            case 8:
+                book_name = input('Enter the name of the Address Book: ')
+                address_book_obj = multi_address_book_obj.get_address_book(book_name)
+                address_book_obj.sort_contact()
 
 
 if __name__ == "__main__":
