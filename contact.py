@@ -71,6 +71,27 @@ class Contact:
                 case 0:
                     break
 
+    def display_contact(self):
+        """
+                Description: display_contact function is to display the details of a contact
+                             from the address book.
+
+                Parameter: None
+
+                Return:    None
+
+        """
+
+        print(f"""
+                First Name: {self.f_name} 
+                Last Name: {self.l_name} 
+                Address : {self.address}
+                City : {self.city}
+                Zip Code : {self.zip_code}
+                Phone Number: {self.ph_no}
+                E-Mail : {self.e_mail}  
+        """)
+
 
 class AddressBook:
     def __init__(self, book_name):
@@ -115,31 +136,15 @@ class AddressBook:
         else:
             print(f'Name not found or dictionary is empty.')
 
-    def display_contact(self):
-        """
-                Description: display_contact function is to display the details of a contact
-                             from the address book.
-
-                Parameter: None
-
-                Return:    None
-
-        """
-        for key, value in self.contact_dict.items():
-            print(f"""
-                     First Name: {key} 
-                     Last Name: {value.l_name} 
-                     Address : {value.address}
-                     City : {value.city}
-                     Zip Code : {value.zip_code}
-                     Phone Number: {value.ph_no}
-                     E-Mail : {value.e_mail}  
-             """)
-
     def display_city_contact(self, city_name):
         contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
-        for _ in contact.values():
-            self.display_contact()
+        for i in contact.values():
+            i.display_contact()
+        return print(f'There are {len(contact)} contacts of {city_name}')
+
+    def count_city_contact(self, city_name):
+        contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
+        print(f'There are {len(contact)} in the {city_name}')
 
 
 class MultipleAddressBook:
@@ -171,6 +176,7 @@ def contact_details():
               f'4. Delete an Existing Contact\n'
               f'5. Display the Contacts\n'
               f'6. Get All the contacts of a city\n'
+              f'7. Get number of contacts in state or city'
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -212,6 +218,11 @@ def contact_details():
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 city_name = input('Enter the City or State Name: ')
                 address_book_obj.display_city_contact(city_name)
+            case 7:
+                book_name = input('Enter the name of the Address Book: ')
+                address_book_obj = multi_address_book_obj.get_address_book(book_name)
+                city_name = input('Enter the City or State Name: ')
+                address_book_obj.count_city_contact(city_name)
 
 
 if __name__ == "__main__":
