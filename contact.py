@@ -5,7 +5,7 @@
 
 @Last Modified by:
 
-@Last Modified time: 2023-13-12 11:20:30
+@Last Modified time: 2023-18-12 14:20:30
 
 @Title : Multiple Address Book
 """
@@ -76,7 +76,7 @@ class Contact:
                 Description: display_contact function is to display the details of a contact
                              from the address book.
 
-                Parameter: None
+                Parameter: Self Object as a Parameter.
 
                 Return:    None
 
@@ -103,7 +103,7 @@ class AddressBook:
             Description: add_contact function is used to add new contact to the contact
                          dictionary.
 
-            Parameter: Contact Object
+            Parameter: Self Object as a Parameter, Contact Object
 
             Return:    None
 
@@ -114,6 +114,15 @@ class AddressBook:
             print(f'Name Already Present\n')
 
     def modify_contact(self, name):
+        """
+            Description: modify_contact function modifies the details of an existing contact
+                        in the Address Book.
+
+            Parameter: Self Object as a Parameter, First Name
+
+            Return:    None
+
+        """
         contact_obj: Contact = self.contact_dict.get(name)
         if contact_obj:
             contact_obj.update_contact()
@@ -125,7 +134,7 @@ class AddressBook:
             Description: delete_contact function is used to delete the details of a person
                          from the address book.
 
-            Parameter: First Name
+            Parameter: Self Object as a Parameter, First Name
 
             Return:    None
 
@@ -137,18 +146,59 @@ class AddressBook:
             print(f'Name not found or dictionary is empty.')
 
     def display_city_contact(self, city_name):
+        """
+            Description: display_city_contact displays the details of all the contacts in a
+                         particular City or State.
+
+            Parameter: Self Object as a Parameter, City Name
+
+            Return:    None
+
+        """
         contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
         for i in contact.values():
             i.display_contact()
-        return print(f'There are {len(contact)} contacts of {city_name}')
 
     def count_city_contact(self, city_name):
+        """
+            Description: count_city_contact function counts the number of contacts in a
+                         particular City or State.
+
+            Parameter: Self Object as a Parameter, City Name
+
+            Return:    None
+
+        """
         contact = dict(filter(lambda x: x[1].city == city_name or x[1].state == city_name, self.contact_dict.items()))
         print(f'There are {len(contact)}  contact in the {city_name}')
 
     def sort_contact(self):
-        for key, value in dict(sorted(self.contact_dict.items())).items():
+        """
+            Description: sort_contact function sort the contact of a particular Address
+                        Book by their first name.
+
+            Parameter: Self Object as a Parameter.
+
+            Return:    None
+
+        """
+        for key, value in sorted(self.contact_dict.items()):
             value.display_contact()
+
+    def sort_contact_city(self, city_name):
+        """
+            Description: sort_contact_city function sort the contacts by their city name or
+                        state name.
+
+            Parameter: Self Object as a Parameter, City Name
+
+            Return:    None
+
+        """
+        sorted_contact = sorted(self.contact_dict.values(), key=lambda x: x.city == city_name, reverse=True)
+        for i in sorted_contact:
+            i: Contact
+            print(i.f_name, '>>>>', i.city)
 
 
 class MultipleAddressBook:
@@ -156,9 +206,28 @@ class MultipleAddressBook:
         self.address_book_dict = {}
 
     def add_address_book(self, address_book_obj):
+        """
+            Description: add_address_book function adds the address book to the
+                         multi address book dictionary.
+
+            Parameter: Self object as a parameter, Address Book Object
+
+            Return:    None
+
+        """
+
         self.address_book_dict.update({address_book_obj.book_name: address_book_obj})
 
     def get_address_book(self, book_name):
+        """
+            Description: get_address_book function gets the address book dictionary from
+                         multi address book dictionary.
+
+            Parameter: Self object as a parameter, Book Name
+
+            Return:    None
+
+        """
         return self.address_book_dict.get(book_name)
 
 
@@ -181,8 +250,8 @@ def contact_details():
               f'5. Display the Contacts\n'
               f'6. Get All the contacts of a city\n'
               f'7. Get number of contacts in state or city\n'
-              f''
-            
+              f'8. Sort the Contacts\n'
+              f'9. Sort the contacts by City or State.\n'
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -233,6 +302,11 @@ def contact_details():
                 book_name = input('Enter the name of the Address Book: ')
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 address_book_obj.sort_contact()
+            case 9:
+                book_name = input('Enter the name of the Address Book: ')
+                address_book_obj = multi_address_book_obj.get_address_book(book_name)
+                city_name = input('Enter the City or State Name: ')
+                address_book_obj.sort_contact_city(city_name)
 
 
 if __name__ == "__main__":
