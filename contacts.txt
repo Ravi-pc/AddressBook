@@ -1,0 +1,3 @@
+('First Name: Sam, Last Name: Willson, Address: New Street- 69, City: New Jersey, Zip Code: 65456, Phone No: 965433456 E-Mail: jdsja@hotmail.com',)
+('First Name: Sam, Last Name: hgfghjkl, Address: gfd, City: tgvrfed, Zip Code: vfrd, Phone No: vrfed E-Mail: vrf',)
+('First Name: bgtvfr, Last Name: vfrd, Address: gtfre, City: fre, Zip Code: tr, Phone No: evfrd E-Mail: ',)

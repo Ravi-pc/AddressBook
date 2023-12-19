@@ -21,6 +21,7 @@ class Contact:
         self.state = state
         self.ph_no = ph_no
         self.e_mail = e_mail
+        self.file = "read_write.txt"
 
     def update_contact(self):
         """
@@ -91,6 +92,21 @@ class Contact:
                 Phone Number: {self.ph_no}
                 E-Mail : {self.e_mail}  
         """)
+
+    def add_contact_to_txt(self):
+        """
+            Description: add_contact_to_txt function is used return the value to the
+                        text file method.
+
+            Parameter: Self Object as a Parameter
+
+            Return:  Properties of Contact class.
+
+        """
+
+        return {
+            f'First Name: {self.f_name}, Last Name: {self.l_name}, Address: {self.address}, City: {self.city}, '
+            f'Zip Code: {self.zip_code}, Phone No: {self.ph_no} E-Mail: {self.e_mail}'}
 
 
 class AddressBook:
@@ -204,6 +220,7 @@ class AddressBook:
 class MultipleAddressBook:
     def __init__(self):
         self.address_book_dict = {}
+        self.file = "contacts.txt"
 
     def add_address_book(self, address_book_obj):
         """
@@ -230,6 +247,24 @@ class MultipleAddressBook:
         """
         return self.address_book_dict.get(book_name)
 
+    def to_txt_file(self):
+        """
+            Description: to_txt_file function writes the details of a contact
+                        in a text format in different file.
+
+            Parameter: Self Object as a Parameter
+
+            Return:    None
+
+        """
+
+        with open(self.file, 'a', newline="") as file:
+            for book, book_obj in self.address_book_dict.items():
+                book_obj: AddressBook
+                for contact, contact_obj in book_obj.contact_dict.items():
+                    contact_obj: Contact
+                    file.write(str(f'{contact_obj.add_contact_to_txt()}\n'))
+
 
 def contact_details():
     """
@@ -252,6 +287,7 @@ def contact_details():
               f'7. Get number of contacts in state or city\n'
               f'8. Sort the Contacts\n'
               f'9. Sort the contacts by City or State.\n'
+              f'10. Read and Write Contacts in the Address Book\n'
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -273,6 +309,7 @@ def contact_details():
                 contact_obj = Contact(f_name, l_name, address, city, zip_code, state, ph_no, email)
                 address_book_obj.add_contact(contact_obj)
                 multi_address_book_obj.add_address_book(address_book_obj)
+                # contact_obj.read_write()
 
             case 3:
                 book_name = input('Enter the name of the Address Book: ')
@@ -307,6 +344,8 @@ def contact_details():
                 address_book_obj = multi_address_book_obj.get_address_book(book_name)
                 city_name = input('Enter the City or State Name: ')
                 address_book_obj.sort_contact_city(city_name)
+            case 10:
+                multi_address_book_obj.to_txt_file()
 
 
 if __name__ == "__main__":
