@@ -323,7 +323,8 @@ def contact_details():
               f'8. Sort the Contacts\n'
               f'9. Sort the contacts by City or State.\n'
               f'10. Read and Write Contacts in the Address Book in Text File\n'
-              f'11. Read and Write Contacts in the Address Book in CSV file\n' 
+              f'11. Read and Write Contacts in the Address Book in CSV file\n'
+              f'12. Read and Write Contacts in the Address Book in json file' 
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
