@@ -9,6 +9,8 @@
 
 @Title : Multiple Address Book
 """
+import csv
+import json
 
 
 class Contact:
@@ -93,24 +95,19 @@ class Contact:
                 E-Mail : {self.e_mail}  
         """)
 
-    def add_contact_to_txt(self):
+    def add_contact_to_file(self):
         """
-            Description: add_contact_to_txt function is used return the value to the
-                        text file method.
-
-            Parameter: Self Object as a Parameter
-
-            Return:  Properties of Contact class.
-
+        Description: This function return contact info dict.
+        Parameter: self object as parameter.
+        Return: contact info dict.
         """
-
-        return {
-            f'First Name: {self.f_name}, Last Name: {self.l_name}, Address: {self.address}, City: {self.city}, '
-            f'Zip Code: {self.zip_code}, Phone No: {self.ph_no} E-Mail: {self.e_mail}'}
+        return {"f_name": self.f_name, "l_name": self.l_name, "address": self.address,
+                "city": self.city, "state": self.state, "pin": self.zip_code, "phone": self.ph_no, "email": self.e_mail}
 
 
 class AddressBook:
     def __init__(self, book_name):
+        self.json_contact_dict = {}
         self.book_name = book_name
         self.contact_dict = {}
 
@@ -216,11 +213,22 @@ class AddressBook:
             i: Contact
             print(i.f_name, '>>>>', i.city)
 
+    def add_json_contact(self):
+        """
+        Description: This function is read and write data in csv file.
+        Parameter: self object as parameter.
+        Return: None
+        """
+        for key, value in self.contact_dict.items():
+            self.json_contact_dict.update({key: value.add_contact_to_file()})
+
 
 class MultipleAddressBook:
     def __init__(self):
+        self.file_json = "contacts.json"
         self.address_book_dict = {}
         self.file = "contacts.txt"
+        self.file_csv = "contacts.csv"
 
     def add_address_book(self, address_book_obj):
         """
@@ -263,7 +271,34 @@ class MultipleAddressBook:
                 book_obj: AddressBook
                 for contact, contact_obj in book_obj.contact_dict.items():
                     contact_obj: Contact
-                    file.write(str(f'{contact_obj.add_contact_to_txt()}\n'))
+                    file.write(str(f'{contact_obj.add_contact_to_file()}\n'))
+
+    def to_csv_file(self):
+        with open(self.file_csv, 'w', newline="") as file:
+            field_names = ['book_name', 'f_name', 'l_name', 'address', 'city', 'state', 'zip_code', 'ph_no',
+                           'e_mail']
+            writer = csv.DictWriter(file, fieldnames=field_names)
+            writer.writeheader()
+            for book, book_obj in self.address_book_dict.items():
+                book_obj: AddressBook
+                for contact, contact_obj in book_obj.contact_dict.items():
+                    data = contact_obj.add_contact_to_file()
+                    data.update({'book_name': contact})
+                    writer.writerow(data)
+
+    def to_json_file(self):
+
+        """
+        Description: This function for writing data in json file.
+        Parameter: self object as parameter.
+        Return: None
+        """
+        json_dict = {}
+        for name, obj in self.address_book_dict.items():
+            json_dict.update({name: obj.json_contact_dict})
+        with open(self.file_json, 'a') as file:
+            json.dump(json_dict, file, indent=4)
+            file.close()
 
 
 def contact_details():
@@ -287,7 +322,8 @@ def contact_details():
               f'7. Get number of contacts in state or city\n'
               f'8. Sort the Contacts\n'
               f'9. Sort the contacts by City or State.\n'
-              f'10. Read and Write Contacts in the Address Book\n'
+              f'10. Read and Write Contacts in the Address Book in Text File\n'
+              f'11. Read and Write Contacts in the Address Book in CSV file\n' 
               f'0. Exit ')
         choice = int(input('Enter your choice: '))
         match choice:
@@ -309,7 +345,7 @@ def contact_details():
                 contact_obj = Contact(f_name, l_name, address, city, zip_code, state, ph_no, email)
                 address_book_obj.add_contact(contact_obj)
                 multi_address_book_obj.add_address_book(address_book_obj)
-                # contact_obj.read_write()
+                address_book_obj.add_json_contact()
 
             case 3:
                 book_name = input('Enter the name of the Address Book: ')
@@ -346,6 +382,10 @@ def contact_details():
                 address_book_obj.sort_contact_city(city_name)
             case 10:
                 multi_address_book_obj.to_txt_file()
+            case 11:
+                multi_address_book_obj.to_csv_file()
+            case 12:
+                multi_address_book_obj.to_json_file()
 
 
 if __name__ == "__main__":
